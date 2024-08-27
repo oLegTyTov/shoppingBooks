@@ -1,0 +1,1 @@
+If you want to run this project you hava to change dependency from mysql to h2 database(change dependency in pom.xml and application.properties)
