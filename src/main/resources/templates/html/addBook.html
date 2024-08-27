@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+    <script>
+        function validateForm() {
+            const checkboxes = document.querySelectorAll('input[name="categories"]:checked');
+            const photoInput = document.getElementById('photo');
+            
+            if (checkboxes.length === 0) {
+                alert("Please select at least one category.");
+                return false; // Prevent form submission
+            }
+            
+            if (!photoInput.files.length) {
+                alert("Please upload a photo.");
+                return false; // Prevent form submission
+            }
+            
+            return true; // Allow form submission
+        }
+    </script>
+</head>
+<body>
+    <h1>Add a New Book</h1>
+
+    <form th:action="@{/admin/addBook}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" th:value="*{title}" required>
+        </div>
+        <div>
+            <label for="price">Price:</label>
+            <input type="number" step="0.01" id="price" name="price" th:value="*{price}" required>
+        </div>
+        <div>
+            <label for="publicationDate">Publication Date:</label>
+            <input type="date" id="publicationDate" name="publicationDate" th:value="*{publicationDate}" required>
+        </div>
+        
+        <!-- Creation Date -->
+        <div>
+            <label for="creationDate">Creation Date:</label>
+            <input type="date" id="creationDate" name="creationDate" th:value="*{creationDate}" required>
+        </div>
+
+        <!-- Author details -->
+        <div>
+            <label for="firstName">Author's First Name:</label>
+            <input type="text" id="firstName" name="author.firstName" required>
+        </div>
+        <div>
+            <label for="lastName">Author's Last Name:</label>
+            <input type="text" id="lastName" name="author.lastName" required>
+        </div>
+
+        <!-- Description -->
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" cols="50" th:value="*{description}" required></textarea>
+        </div>
+
+       <!-- Category selection -->
+<div>
+    <label>Categories:</label><br>
+    <input type="checkbox" id="classics" name="categories" value="Classics">
+    <label for="classics">Classics</label><br>
+    <input type="checkbox" id="fantasy" name="categories" value="Fantasy">
+    <label for="fantasy">Fantasy</label><br>
+    <input type="checkbox" id="detectives" name="categories" value="Detectives">
+    <label for="detectives">Detectives</label><br>
+    <input type="checkbox" id="thrillers" name="categories" value="Thrillers">
+    <label for="thrillers">Thrillers</label><br>
+    <input type="checkbox" id="novels" name="categories" value="Romances">
+    <label for="novels">Romances</label><br>
+    <input type="checkbox" id="biographies" name="categories" value="Biographies">
+    <label for="biographies">Biographies</label><br>
+    <input type="checkbox" id="self-development" name="categories" value="Self-development">
+    <label for="self-development">Self-development</label><br>
+    <input type="checkbox" id="psychology" name="categories" value="Psychology">
+    <label for="psychology">Psychology</label><br>
+    <input type="checkbox" id="philosophy" name="categories" value="Philosophy">
+    <label for="philosophy">Philosophy</label><br>
+    <input type="checkbox" id="science" name="categories" value="Nonfiction">
+    <label for="science">Nonfiction</label><br>
+    <input type="checkbox" id="history" name="categories" value="History">
+    <label for="history">History</label><br>
+    <input type="checkbox" id="business-economics" name="categories" value="Business and economy">
+    <label for="business-economics">Business and economy</label><br>
+    <input type="checkbox" id="health-sports" name="categories" value="Health and sports">
+    <label for="health-sports">Health and sports</label><br>
+    <input type="checkbox" id="cooking" name="categories" value="Cooking">
+    <label for="cooking">Cooking</label><br>
+    <input type="checkbox" id="arts-culture" name="categories" value="Art and culture">
+    <label for="arts-culture">Art and culture</label><br>
+    <input type="checkbox" id="fairy-tales" name="categories" value="Books for teenagers">
+    <label for="fairy-tales">Books for teenagers</label><br>
+    <input type="checkbox" id="teen-books" name="categories" value="Travel and adventure">
+    <label for="teen-books">Travel and adventure</label><br>
+</div>
+
+        <!-- Photo upload -->
+        <div>
+            <label for="photo">Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+        </div>
+
+        <div>
+            <button type="submit">Add Book</button>
+        </div>
+    </form>
+
+    <div th:if="${error}">
+        <p>Error: Book could not be added. Please try again.</p>
+    </div>
+
+    <a th:href="@{/admin}">Back to Admin Page</a>
+</body>
+</html>

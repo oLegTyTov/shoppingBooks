@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Author</title>
+</head>
+<body>
+    <h1>Add a New Author</h1>
+
+    <form th:action="@{/admin/addAuthor}" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" th:value="*{firstName}" required>
+        </div>
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" th:value="*{lastName}" required>
+        </div>
+        <div>
+            <label for="biography">Biography:</label>
+            <textarea id="biography" name="biography" th:value="*{biography}" required></textarea>
+        </div>
+        <div>
+            <label for="nationality">Nationality:</label>
+            <input type="text" id="nationality" name="nationality" th:value="*{nationality}" required>
+        </div>
+        <div>
+            <label for="photo">Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+        </div>
+        <div>
+            <button type="submit">Add Author</button>
+        </div>
+    </form>
+
+    <div th:if="${error}">
+        <p>Error: Author could not be added. Please try again.</p>
+    </div>
+
+    <a th:href="@{/admin}">Back to Admin Page</a>
+</body>
+</html>

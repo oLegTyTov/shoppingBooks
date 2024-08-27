@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books by Author</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .navbar {
+            background-color: #6f42c1; /* Purple navbar */
+        }
+
+        .navbar-brand {
+            color: #ffffff !important; /* White text for brand */
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important; /* White text for nav links */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa !important; /* Light gray on hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Slight white background on hover */
+            border-radius: 0.25rem; /* Rounded corners on hover */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding-top: 20px;
+            background-color: #ffffff; /* White background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .books-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .book-item {
+            width: 30%;
+            margin-bottom: 20px;
+            text-align: center;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .book-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .book-item:hover {
+            background-color: #e0e0e0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-decoration: underline;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: #007bff;
+            margin: 0 10px;
+        }
+
+        .pagination span {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">Shopping Books</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/getCategories">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/getAuthors">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:if="${userDetails != null}">
+                    <a class="nav-link" href="#">Hello, <span th:text="${userDetails.username}">User</span></a>
+                </li>
+                <li class="nav-item" th:if="${userDetails == null}">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" th:if="${userDetails == null}">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1 th:text="'Books by '+${nameAuthor}">Books by Author</h1>
+        <div class="books-container">
+            <a th:each="book : ${pageBooks.content}" th:href="@{/getBook(id=${book.id})}" class="book-item">
+                <img th:src="'data:image/jpeg;base64,' + ${book.base64Image}" alt="Book Photo"/>
+                <h2 th:text="${book.title}">Book Title</h2>
+            </a>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            <a th:if="${currentPage > 0}" th:href="@{/getBooksOfAuthor(id=${authorId}, page=${currentPage - 1}, size=${size})}">Previous</a>
+            <span th:text="'Page ' + (${currentPage + 1}) + ' of ' + ${totalPages}"></span>
+            <a th:if="${currentPage < totalPages - 1}" th:href="@{/getBooksOfAuthor(id=${authorId}, page=${currentPage + 1}, size=${size})}">Next</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

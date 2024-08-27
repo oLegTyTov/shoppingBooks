@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Book</title>
+</head>
+<body>
+    <h1>Delete a Book</h1>
+
+    <div th:if="${error}">
+        <p style="color: red;">Error: The book could not be deleted. Please try again.</p>
+    </div>
+
+    <form th:action="@{/admin/deleteBook}" method="post">
+        <div>
+            <label for="bookTitle">Book Title:</label>
+            <input type="text" id="bookTitle" name="title" required>
+        </div>
+
+        <div>
+            <button type="submit">Delete Book</button>
+        </div>
+    </form>
+
+    <a th:href="@{/admin}">Back to Admin Page</a>
+</body>
+</html>

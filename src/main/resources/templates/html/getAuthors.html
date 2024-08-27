@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authors List</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f0f0f0; /* Light grey background */
+        }
+        .navbar {
+            background-color: #6f42c1; /* Purple navbar */
+        }
+        .navbar-brand {
+            color: #ffffff !important; /* White text for brand */
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff !important; /* White text for nav links */
+        }
+        .navbar-nav .nav-link.active {
+            background-color: #5a2a9e; /* Darker purple background for active link */
+            color: #ffffff !important; /* Ensure text color remains white */
+            border-radius: 0.25rem;
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Light grey background on hover */
+            color: #ffffff !important; /* Ensure text color remains white */
+            border-radius: 0.25rem;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .authors-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .author-item {
+            width: calc(33.333% - 20px); /* Three authors per row with spacing */
+            box-sizing: border-box;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 10px;
+            transition: box-shadow 0.3s;
+        }
+        .author-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .author-image {
+            width: 100%; /* Make the image full-width of its container */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 8px; /* Optionally round corners */
+            margin-bottom: 10px;
+        }
+        .author-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .author-name:hover {
+            text-decoration: underline;
+        }
+        .author-biography {
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">Shopping Books</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/getCategories">Categories</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link active" href="/getAuthors">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:if="${userDetails != null}">
+                    <a class="nav-link" href="#">Hello, <span th:text="${userDetails.username}">User</span></a>
+                </li>
+                <li class="nav-item" th:if="${userDetails == null}">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" th:if="${userDetails == null}">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+        <h1>Authors List</h1>
+        <div class="authors-grid">
+            <!-- Iterate over each Author -->
+            <div th:each="author : ${authors}" class="author-item">
+                <a th:href="@{/getAuthor(id=${author.id})}" style="text-decoration: none;">
+                    <img th:src="'data:image/jpeg;base64,' + ${author.base64Image}" class="author-image" alt="Author Image"/>
+                    <div class="author-name" th:text="${author.firstName} + ' ' + ${author.lastName}">Author Name</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

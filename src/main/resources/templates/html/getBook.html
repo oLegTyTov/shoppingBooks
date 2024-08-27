@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light grey background */
+        }
+        .navbar {
+            background-color: #6f42c1; /* Purple navbar */
+        }
+        .navbar-brand {
+            color: #ffffff !important; /* White text for brand */
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff !important; /* White text for nav links */
+        }
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa !important; /* Light gray on hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Slight white background on hover */
+            border-radius: 0.25rem; /* Rounded corners on hover */
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff; /* White background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .book-image {
+            width: 100%;
+            height: auto;
+            max-height: 400px; /* Limit the height */
+            object-fit: contain; /* Ensure the image fits within the container without being cropped */
+        }
+        .book-title {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #6f42c1; /* Purple color for the title */
+        }
+        .book-info p {
+            margin: 5px 0;
+        }
+        .book-info label {
+            font-weight: bold;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #28a745; /* Green button */
+            border-radius: 5px;
+            border: 1px solid #28a745;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button-container a:hover {
+            background-color: #218838;
+            color: #fff;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .book-categories {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .book-categories span {
+            font-weight: bold;
+        }
+        .book-categories a {
+            margin: 5px;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .book-categories a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .book-description {
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">Shopping Books</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/getCategories">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/getAuthors">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:if="${userDetails != null}">
+                    <a class="nav-link" href="#">Hello, <span th:text="${userDetails.username}">User</span></a>
+                </li>
+                <li class="nav-item" th:if="${userDetails == null}">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" th:if="${userDetails == null}">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="book-details">
+            <img th:if="${book.base64Image != null}" th:src="'data:image/jpeg;base64,' + ${book.base64Image}" class="book-image" alt="Book Image" />
+            <div class="book-title" th:text="${book.title}">Book Title</div>
+            <div class="book-info">
+                <p>
+                    <label>Author:</label> 
+                    <a th:href="@{/getAuthor(id=${book.author.id})}" th:text="${book.author.firstName} + ' ' + ${book.author.lastName}">Author Name</a>
+                </p>
+                <p><label>Price:</label> <span th:text="${book.price}">Price</span></p>
+                <p><label>Published on:</label> <span th:text="${book.publicationDate}">Publication Date</span></p>
+                <p><label>Creation Date:</label> <span th:text="${book.creationDate}">Creation Date</span></p>
+            </div>
+        </div>
+
+        <!-- New Description Section -->
+        <div class="book-description">
+            <p><label>Description:</label></p>
+            <p th:text="${book.description}">This is a description of the book.</p>
+        </div>
+
+        <!-- Book Categories -->
+        <div class="book-categories">
+            <span>Categories:</span>
+            <div>
+                <a th:each="category : ${book.categories}" th:href="@{/getBooksOfCategory(id=${category.id})}" th:text="${category.name}">Category Name</a>
+            </div>
+        </div>
+
+        <!-- Error message -->
+        <div class="error-message" th:if="${error}">
+            <p>Помилка: недостатньо коштів, будь-ласка поповніть баланс.</p>
+        </div>
+
+        <!-- Back to Main Page Button -->
+        <div class="button-container">
+            <a th:href="@{/}">Back to Main Page</a>
+            <a th:href="@{/buyBook(id=${bookId})}">Buy Book</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
