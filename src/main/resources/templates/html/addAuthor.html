@@ -2,41 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Author</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 50px; max-width: 500px; }
+    </style>
 </head>
 <body>
-    <h1>Add a New Author</h1>
-
-    <form th:action="@{/admin/addAuthor}" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" th:value="*{firstName}" required>
-        </div>
-        <div>
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" th:value="*{lastName}" required>
-        </div>
-        <div>
-            <label for="biography">Biography:</label>
-            <textarea id="biography" name="biography" th:value="*{biography}" required></textarea>
-        </div>
-        <div>
-            <label for="nationality">Nationality:</label>
-            <input type="text" id="nationality" name="nationality" th:value="*{nationality}" required>
-        </div>
-        <div>
-            <label for="photo">Photo:</label>
-            <input type="file" id="photo" name="photo" accept="image/*">
-        </div>
-        <div>
-            <button type="submit">Add Author</button>
-        </div>
-    </form>
-
-    <div th:if="${error}">
-        <p>Error: Author could not be added. Please try again.</p>
+    <div class="container">
+        <h2 class="mb-4">Add a New Author</h2>
+        <form th:action="@{/admin/addAuthor}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="biography">Biography:</label>
+                <textarea class="form-control" id="biography" name="biography" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="nationality">Nationality:</label>
+                <input type="text" class="form-control" id="nationality" name="nationality" required>
+            </div>
+            <div class="form-group">
+                <label for="photo">Photo:</label>
+                <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Author</button>
+        </form>
+        <div th:if="${error}" class="alert alert-danger mt-3">Error: Author could not be added. Please try again.</div>
+        <a th:href="@{/admin}" class="btn btn-secondary mt-3">Back to Admin Page</a>
     </div>
-
-    <a th:href="@{/admin}">Back to Admin Page</a>
 </body>
 </html>

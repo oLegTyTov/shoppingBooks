@@ -2,7 +2,9 @@ package com.example.shoppingbooks.controllers;
 
 import java.io.IOException;
 import java.util.List;
-
+import java.util.Optional;
+import com.example.shoppingbooks.entities.Category;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
+import com.example.exceptions.CategoryExistException;
+import com.example.exceptions.CategoryNotExistException;
 import com.example.shoppingbooks.entities.Author;
 import com.example.shoppingbooks.entities.Book;
 import com.example.shoppingbooks.services.AuthorService;
@@ -28,17 +32,18 @@ import com.example.shoppingbooks.services.CategoryService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/admin")
 @Secured("ADMIN")
 public class AdminController {
+    @Autowired
     private AuthorService authorService;
+    @Autowired
     private BookService bookService;
-    public AdminController(AuthorService authorService, BookService bookService){
-        this.authorService = authorService;
-        this.bookService = bookService;
-    }
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping
     public String adminPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -54,6 +59,44 @@ public class AdminController {
             model.addAttribute("error", false);
         }
         return "html/addAuthor";
+    }
+@GetMapping("/addCategory")
+public String addCategoryPage(@RequestParam(required = false) Boolean error, Model model) {
+    if (error != null && error) {
+        model.addAttribute("error", true);
+    } else {
+        model.addAttribute("error", false);
+    }
+    return "html/addCategory";
+}
+
+    @PostMapping("/addCategory")
+    public String addCategory(@ModelAttribute Category category, @RequestParam("photo") MultipartFile photo) {
+        try {
+            categoryService.addCategory(category);
+            return "redirect:/admin?error=false";
+        } catch (CategoryExistException e) {
+            return "redirect:/admin/addCategory?error=true";
+        }
+    }
+    @GetMapping("/deleteCategory")
+    public String deleteCategoryPage(@RequestParam(required = false) Boolean error, Model model) {
+        if (error != null && error) {
+            model.addAttribute("error", true);
+        } else {
+            model.addAttribute("error", false);
+        }
+        return "html/deleteCategory";
+    }
+    
+    @PostMapping("/deleteCategory")
+    public String deleteCategory(@RequestParam String nameCategory) {
+        try {
+            categoryService.deleteCategory(nameCategory);
+            return "redirect:/admin?error=false";
+        } catch (CategoryNotExistException e) {
+            return "redirect:/admin/deleteCategory?error=true";
+        }
     }
 
     @PostMapping("/addAuthor")
@@ -114,6 +157,7 @@ public class AdminController {
         } else {
             model.addAttribute("error", false);
         }
+        model.addAttribute("categoriesFilms",categoryService.getAllCategories());
         return "html/addBook";
     }
 

@@ -31,26 +31,29 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(auth -> auth
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests(auth -> auth
             .requestMatchers("/myAccount/**").hasAuthority("USER")
             .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                .anyRequest().permitAll()
-            )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .successHandler(customAuthenticationSuccessHandler) // Використання кастомного обробника
-                .failureUrl("/login?error=true")
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID", "remember-me")
-                .permitAll()
-            );
-        return http.build();
-    }
+            .anyRequest().permitAll()
+        )
+        .formLogin(form -> form
+            .loginPage("/login")
+            .successHandler(customAuthenticationSuccessHandler)
+            .failureUrl("/login?error=true")
+            .permitAll()
+        )
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true) // Додаємо скидання сесії
+            .clearAuthentication(true)
+            .deleteCookies("JSESSIONID", "remember-me")
+            .permitAll()
+        );
+
+    return http.build();
+}
+
 }

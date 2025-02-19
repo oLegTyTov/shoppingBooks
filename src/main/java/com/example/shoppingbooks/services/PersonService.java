@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.shoppingbooks.entities.Person;
+import com.example.shoppingbooks.entities.Role;
 import com.example.shoppingbooks.repositories.PersonRepository;
 import com.example.shoppingbooks.repositories.RoleRepository;
 
@@ -31,6 +32,9 @@ public class PersonService implements UserDetailsService {
         personRepository.save(person);
     }
     public boolean addPerson(Person person) {
+        Role role=new Role();//special update for deploy(I added it for security)
+        role.setName("USER");
+        person.setRole(role);
         if (personRepository.existsByUsername(person.getUsername())) {
             return false;
         }

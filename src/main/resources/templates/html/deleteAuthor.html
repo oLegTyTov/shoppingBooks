@@ -2,30 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Author</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 50px; max-width: 500px; }
+    </style>
 </head>
 <body>
-    <h1>Delete an Author</h1>
-
-    <div th:if="${error}">
-        <p style="color: red;">Error: The author could not be deleted. Please try again.</p>
+    <div class="container">
+        <h2 class="mb-4">Delete an Author</h2>
+        <form th:action="@{/admin/deleteAuthor}" method="post">
+            <div class="form-group">
+                <label for="firstName">Author's First Name:</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Author's Last Name:</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Delete Author</button>
+        </form>
+        <div th:if="${error}" class="alert alert-danger mt-3">Error: The author could not be deleted.</div>
+        <a th:href="@{/admin}" class="btn btn-secondary mt-3">Back to Admin Page</a>
     </div>
-
-    <form th:action="@{/admin/deleteAuthor}" method="post">
-        <div>
-            <label for="firstName">Author's First Name:</label>
-            <input type="text" id="firstName" name="firstName" required>
-        </div>
-        <div>
-            <label for="lastName">Author's Last Name:</label>
-            <input type="text" id="lastName" name="lastName" required>
-        </div>
-
-        <div>
-            <button type="submit">Delete Author</button>
-        </div>
-    </form>
-
-    <a th:href="@{/admin}">Back to Admin Page</a>
 </body>
 </html>

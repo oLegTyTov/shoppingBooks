@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
-public class MainController {// mainPage+pages that ate connected with authentication
+public class MainController {// mainPage+pages that are connected with authentication
     private PersonService personService;
     private BookService bookService;
     private CategoryRepository categoryRepository;
