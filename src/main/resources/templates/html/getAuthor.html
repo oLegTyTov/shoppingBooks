@@ -112,7 +112,15 @@
                 <li class="nav-item" th:if="${userDetails == null}">
                     <a class="nav-link" href="/signup">Sign Up</a>
                 </li>
+                <li class="nav-item" th:if="${userDetails != null}">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button class="btn btn-link nav-link" type="submit" style="border:none; background:none; padding:0; color:white;">
+                            Logout
+                        </button>
+                    </form>
+                </li>
             </ul>
+            
         </div>
     </nav>
 

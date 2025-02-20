@@ -34,22 +34,24 @@ public class MainController {// mainPage+pages that are connected with authentic
     private AuthorService authorService;
     public static final String sizePagination = "6";
 
-    public MainController(PersonService personService, BookService bookService,CategoryRepository categoryRepository,AuthorService authorService) {
+    public MainController(PersonService personService, BookService bookService, CategoryRepository categoryRepository,
+            AuthorService authorService) {
         this.personService = personService;
         this.bookService = bookService;
-        this.categoryRepository=categoryRepository;
-        this.authorService=authorService;
+        this.categoryRepository = categoryRepository;
+        this.authorService = authorService;
     }
+
     @GetMapping("/about")
     public String about() {
         return "html/aboutUs";
     }
+
     @GetMapping("/contact")
     public String contact() {
         return "html/contactUs";
     }
-    
-    
+
     @GetMapping
     public String mainPage(@AuthenticationPrincipal UserDetails userDetails,
             Model model,
@@ -59,7 +61,7 @@ public class MainController {// mainPage+pages that are connected with authentic
             @RequestParam(defaultValue = sizePagination) int size) {
         if (userDetails != null) {
             model.addAttribute("userDetails", userDetails);
-            model.addAttribute("role",userDetails.getAuthorities().iterator().next().getAuthority());
+            model.addAttribute("role", userDetails.getAuthorities().iterator().next().getAuthority());
             model.addAttribute("autenticated", autenticated);
         }
         Page<Book> booksPage = bookService.getAllBooks(page, size, nameBook);
@@ -67,27 +69,28 @@ public class MainController {// mainPage+pages that are connected with authentic
             String base64Image = Base64.getEncoder().encodeToString(book.getPhoto());
             book.setBase64Image(base64Image);
         });
-        model.addAttribute("nameBook",nameBook);
+        model.addAttribute("nameBook", nameBook);
         model.addAttribute("booksPage", booksPage);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", booksPage.getTotalPages());
         return "html/mainPage";
     }
+
     @GetMapping("/getBook")
-    public String getBookPage(@RequestParam Long id,Model model,@RequestParam(required = false) Boolean error) {
-        Book book=bookService.findById(id);
+    public String getBookPage(@RequestParam Long id, Model model, @RequestParam(required = false) Boolean error,@AuthenticationPrincipal UserDetails userDetails) {
+        Book book = bookService.findById(id);
         String base64Image = Base64.getEncoder().encodeToString(book.getPhoto());
         book.setBase64Image(base64Image);
-        if(error!=null)
-        {
-        model.addAttribute("error",true);
+        if (error != null) {
+            model.addAttribute("error", true);
         }
         Hibernate.initialize(book.getCategories());
         model.addAttribute("book", book);
-        model.addAttribute("bookId",id);
+        model.addAttribute("bookId", id);
+        model.addAttribute("userDetails", userDetails);
         return "html/getBook";
     }
-    
+
     @GetMapping("/signup")
     public String signupPage(Model model, @RequestParam(required = false) Boolean error) {
         if (error != null && error) {
@@ -116,68 +119,78 @@ public class MainController {// mainPage+pages that are connected with authentic
         }
         return "html/login";
     }
+
     @GetMapping("/getCategories")
-    public String getCategories(Model model) {
-        List<Category>categories=categoryRepository.findAll();
+    public String getCategories(Model model,@AuthenticationPrincipal UserDetails userDetails) {
+        List<Category> categories = categoryRepository.findAll();
         categories.forEach(category -> {
             String base64Image = Base64.getEncoder().encodeToString(category.getPhoto());
             category.setBase64Image(base64Image);
         });
+        model.addAttribute("userDetails", userDetails);
         model.addAttribute("categories", categories);
         return "html/getCategories";
     }
+
     @GetMapping("/getBooksOfCategory")
-    public String getBooksOfCategory(@RequestParam Long id,Model model,@RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = sizePagination) int size) {
-        Page<Book>pageBooks=bookService.getBooksOfCategory(id,page,size);
+    public String getBooksOfCategory(@RequestParam Long id, Model model, @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = sizePagination) int size,@AuthenticationPrincipal UserDetails userDetails) {
+        Page<Book> pageBooks = bookService.getBooksOfCategory(id, page, size);
         pageBooks.getContent().forEach(book -> {
             String base64Image = Base64.getEncoder().encodeToString(book.getPhoto());
             book.setBase64Image(base64Image);
         });
-        model.addAttribute("pageBooks",pageBooks);
+        model.addAttribute("pageBooks", pageBooks);
         model.addAttribute("categoryId", id);
+        model.addAttribute("userDetails", userDetails);
         return "html/getBooksOfCategory";
     }
+
     @GetMapping("/getAuthors")
-    public String getAuthors(Model model) {
-        List<Author>authors=authorService.getAllAuthors();
+    public String getAuthors(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        List<Author> authors = authorService.getAllAuthors();
         authors.forEach(author -> {
             String base64Image = Base64.getEncoder().encodeToString(author.getPhoto());
             author.setBase64Image(base64Image);
         });
+        model.addAttribute("userDetails", userDetails);
         model.addAttribute("authors", authors);
         return "html/getAuthors";
     }
+
     @GetMapping("/getAuthor")
-    public String getAuthor(@RequestParam Long id,Model model) {
-        Author author=authorService.findAuthor(id);
+    public String getAuthor(@RequestParam Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Author author = authorService.findAuthor(id);
         String base64Image = Base64.getEncoder().encodeToString(author.getPhoto());
         author.setBase64Image(base64Image);
+        model.addAttribute("userDetails", userDetails);
         model.addAttribute("author", author);
         return "html/getAuthor";
     }
-    
+
     @GetMapping("/getBooksOfAuthor")
-    public String getBooksOfAuthor(@RequestParam Long id, Model model, 
-                                   @RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = sizePagination) int size) {
+    public String getBooksOfAuthor(@RequestParam Long id, Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = sizePagination) int size,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Page<Book> pageBooks = bookService.getBooksOfAuthor(id, page, size);
         pageBooks.getContent().forEach(book -> {
             String base64Image = Base64.getEncoder().encodeToString(book.getPhoto());
             book.setBase64Image(base64Image);
         });
+        model.addAttribute("userDetails", userDetails);
         model.addAttribute("authorId", id);
-        String nameAuthor="";
-        if(!pageBooks.isEmpty())
-    {
-    nameAuthor=pageBooks.getContent().get(0).getAuthor().getFirstName()+" "+pageBooks.getContent().get(0).getAuthor().getLastName();
-    }
-        model.addAttribute("nameAuthor",nameAuthor);
+        String nameAuthor = "";
+        if (!pageBooks.isEmpty()) {
+            nameAuthor = pageBooks.getContent().get(0).getAuthor().getFirstName() + " "
+                    + pageBooks.getContent().get(0).getAuthor().getLastName();
+        }
+        model.addAttribute("nameAuthor", nameAuthor);
         model.addAttribute("pageBooks", pageBooks);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pageBooks.getTotalPages());
         model.addAttribute("size", size);
         return "html/getBooksOfAuthor";
     }
-    
+
 }

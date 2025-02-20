@@ -98,12 +98,7 @@
                 <li class="nav-item" th:if="${userDetails != null and role == 'ADMIN'}">
                     <a class="nav-link" th:href="@{/admin}">Admin Dashboard</a>
                 </li>
-                <li class="nav-item" th:if="${userDetails == null}">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item" th:if="${userDetails == null}">
-                    <a class="nav-link" href="/signup">Sign Up</a>
-                </li>
+
             </ul>
         </div>
     </nav>

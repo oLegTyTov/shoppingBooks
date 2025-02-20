@@ -128,13 +128,23 @@
                 <li class="nav-item" th:if="${userDetails != null}">
                     <a class="nav-link" href="#">Hello, <span th:text="${userDetails.username}">User</span></a>
                 </li>
+                
+                <!-- Якщо користувач не авторизований, показати Login і Sign Up -->
                 <li class="nav-item" th:if="${userDetails == null}">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
                 <li class="nav-item" th:if="${userDetails == null}">
                     <a class="nav-link" href="/signup">Sign Up</a>
                 </li>
+            
+                <!-- Якщо користувач авторизований, показати кнопку Logout -->
+                <li class="nav-item" th:if="${userDetails != null}">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger ml-2">Logout</button>
+                    </form>
+                </li>
             </ul>
+            
         </div>
     </nav>
 

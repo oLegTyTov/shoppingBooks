@@ -51,7 +51,11 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .clearAuthentication(true)
             .deleteCookies("JSESSIONID", "remember-me")
             .permitAll()
-        );
+        )
+        .exceptionHandling(exception -> exception
+        .accessDeniedPage("/html/error") // Якщо немає доступу або невідомий URL → сторінка помилки
+    );
+        ;
 
     return http.build();
 }

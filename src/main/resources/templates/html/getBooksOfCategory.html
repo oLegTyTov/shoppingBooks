@@ -123,7 +123,11 @@
                 <li class="nav-item" th:if="${userDetails == null}">
                     <a class="nav-link" href="/signup">Sign Up</a>
                 </li>
+                <li class="nav-item" th:if="${userDetails != null}">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
             </ul>
+            
         </div>
     </nav>
 
