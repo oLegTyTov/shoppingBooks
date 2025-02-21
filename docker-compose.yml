@@ -9,9 +9,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: shoppingbooks
       MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: oleg228
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -24,7 +24,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shoppingbooks?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: oleg228
       SPRING_JPA_HIBERNATE_DDL-AUTO: update
     ports:
       - "8080:8080"
