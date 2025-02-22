@@ -9,6 +9,6 @@ COPY target/shoppingbooks-0.0.1-SNAPSHOT.jar app.jar
 
 # Виставляємо порт для контейнера
 EXPOSE 8080
-
+k
 # Команда для запуску застосунку
 ENTRYPOINT ["java", "-jar", "app.jar"]
