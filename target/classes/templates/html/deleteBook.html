@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Book</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 50px; max-width: 500px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4">Delete a Book</h2>
+        <form th:action="@{/admin/deleteBook}" method="post">
+            <div class="form-group">
+                <label for="bookTitle">Book Title:</label>
+                <input type="text" class="form-control" id="bookTitle" name="title" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Delete Book</button>
+        </form>
+        <div th:if="${error}" class="alert alert-danger mt-3">Error: The book could not be deleted.</div>
+        <a th:href="@{/admin}" class="btn btn-secondary mt-3">Back to Admin Page</a>
+    </div>
+</body>
+</html>

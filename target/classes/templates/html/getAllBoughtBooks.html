@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Bought Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .book-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .book-image {
+            width: 100px;
+            height: auto;
+            max-height: 150px;
+            margin-right: 20px;
+            border-radius: 5px;
+        }
+        .book-details {
+            flex: 1;
+        }
+        .book-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .book-info {
+            margin-bottom: 10px;
+        }
+        .book-info label {
+            font-weight: bold;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            text-decoration: none;
+            color: #007bff;
+            padding: 10px 20px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            margin: 0 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .pagination a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Bought Books</h1>
+        <!-- Iterate over each BookBought item -->
+        <div th:each="bookBought : ${pageBookBoughts.content}" class="book-item">
+            <img th:src="'data:image/jpeg;base64,' + ${bookBought.book.base64Image}" class="book-image" alt="Book Image"/>
+            <div class="book-details">
+                <a th:href="@{/getBook(id=${bookBought.book.id})}" class="book-title" th:text="${bookBought.book.title}">Book Title</a>
+                <div class="book-info">
+                    <p><label>Date Bought:</label> <span th:text="${bookBought.dateBought}">Date Bought</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination Links -->
+        <div class="pagination">
+            <a th:if="${pageBookBoughts.hasPrevious()}" th:href="@{/getAllBoughtBooks(page=${pageBookBoughts.number - 1}, size=${pageBookBoughts.size})}">Previous</a>
+            <a th:if="${pageBookBoughts.hasNext()}" th:href="@{/getAllBoughtBooks(page=${pageBookBoughts.number + 1}, size=${pageBookBoughts.size})}">Next</a>
+        </div>
+
+        <!-- Error message -->
+        <div class="error-message" th:if="${error}">
+            <p th:text="${error}">Error Message</p>
+        </div>
+    </div>
+</body>
+</html>
