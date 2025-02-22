@@ -1,5 +1,5 @@
 # 1. Використовуємо OpenJDK 17 як середовище для білду
-FROM maven:3.8.6-openjdk-17-slim AS build
+FROM maven:3.8.8-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # 2. Копіюємо весь код у контейнер
