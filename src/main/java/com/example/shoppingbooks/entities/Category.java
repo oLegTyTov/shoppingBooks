@@ -15,12 +15,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Transient;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 @Entity
-@Data
-@NoArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +28,24 @@ public class Category {
     private byte[] photo;
     @Transient
     private String base64Image;
+    public Category()
+    {
+    }
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }public void setId(Long id) {
+        this.id = id;
+    }public void setName(String name) {
+        this.name = name;
+    }public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }public String getBase64Image() {
+        return base64Image;
+    }public Long getId() {
+        return id;
+    }public String getName() {
+        return name;
+    }public byte[] getPhoto() {
+        return photo;
+    }
 }

@@ -12,15 +12,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 import java.util.Set;
 import java.util.Objects;
 @Entity
-@Data
-@NoArgsConstructor
-public class Author {
 
+public class Author {
+public Author()
+{
+
+}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,7 +47,43 @@ public class Author {
         Author other = (Author) obj;
         return Objects.equals(id, other.id); // Correctly comparing ids
     }
-
+public String getBase64Image() {
+    return base64Image;
+}public String getBiography() {
+    return biography;
+}public Set<Book> getBooks() {
+    return books;
+}public String getFirstName() {
+    return firstName;
+}public Long getId() {
+    return id;
+}public String getLastName() {
+    return lastName;
+}public String getNationality() {
+    return nationality;
+}public Integer getNumberBooks() {
+    return numberBooks;
+}public byte[] getPhoto() {
+    return photo;
+}public void setBase64Image(String base64Image) {
+    this.base64Image = base64Image;
+}public void setBiography(String biography) {
+    this.biography = biography;
+}public void setBooks(Set<Book> books) {
+    this.books = books;
+}public void setFirstName(String firstName) {
+    this.firstName = firstName;
+}public void setId(Long id) {
+    this.id = id;
+}public void setLastName(String lastName) {
+    this.lastName = lastName;
+}public void setNationality(String nationality) {
+    this.nationality = nationality;
+}public void setNumberBooks(Integer numberBooks) {
+    this.numberBooks = numberBooks;
+}public void setPhoto(byte[] photo) {
+    this.photo = photo;
+}
     // Correct implementation of hashCode method
     @Override
     public int hashCode() {

@@ -1,19 +1,14 @@
-# 1. Використовуємо OpenJDK 17 як середовище для білду
-FROM maven:3.8.6-openjdk-17-slim AS build
-WORKDIR /app
-
-# 2. Копіюємо весь код у контейнер
-COPY . .
-
-# 3. Виконуємо білд (створення JAR-файлу)
-RUN mvn clean package -DskipTests
-
-# 4. Використовуємо OpenJDK 17 для запуску програми
+# Використовуємо офіційний образ JDK 17
 FROM openjdk:17-jdk-slim
+
+# Встановлюємо робочу директорію всередині контейнера
 WORKDIR /app
 
-# 5. Копіюємо зібраний JAR-файл із попередньої стадії
-COPY --from=build /app/target/shoppingbooks-0.0.1-SNAPSHOT.jar app.jar
+# Копіюємо зібраний JAR-файл у контейнер
+COPY target/shoppingbooks-0.0.1-SNAPSHOT.jar app.jar
 
-# 6. Запускаємо додаток
-CMD ["java", "-jar", "app.jar"]
+# Виставляємо порт для контейнера
+EXPOSE 8080
+
+# Команда для запуску застосунку
+ENTRYPOINT ["java", "-jar", "app.jar"]
