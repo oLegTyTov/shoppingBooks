@@ -23,12 +23,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Transient;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
-@Data
-@NoArgsConstructor
 public class Book {
 
     @Id
@@ -65,5 +60,52 @@ public class Book {
     @Override
     public int hashCode() {
         return Objects.hash(id); // Hash code based on id
+    }
+    public Book()
+    {}
+    public Author getAuthor() {
+        return author;
+    }public String getBase64Image() {
+        return base64Image;
+    }public List<BookBought> getBookBought() {
+        return bookBought;
+    }public Set<Category> getCategories() {
+        return categories;
+    }public LocalDate getCreationDate() {
+        return creationDate;
+    }public String getDescription() {
+        return description;
+    }public Long getId() {
+        return id;
+    }public byte[] getPhoto() {
+        return photo;
+    }public Double getPrice() {
+        return price;
+    }public LocalDate getPublicationDate() {
+        return publicationDate;
+    }public String getTitle() {
+        return title;
+    }public void setAuthor(Author author) {
+        this.author = author;
+    }public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }public void setBookBought(List<BookBought> bookBought) {
+        this.bookBought = bookBought;
+    }public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }public void setDescription(String description) {
+        this.description = description;
+    }public void setId(Long id) {
+        this.id = id;
+    }public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }public void setPrice(Double price) {
+        this.price = price;
+    }public void setPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
+    }public void setTitle(String title) {
+        this.title = title;
     }
 }
